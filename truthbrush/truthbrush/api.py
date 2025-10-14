@@ -392,6 +392,7 @@ class Api:
         replies=False,
         verbose=False,
         created_after: datetime = None,
+        created_before: datetime = None,
         since_id=None,
         pinned=False,
     ) -> List[dict]:
@@ -467,6 +468,9 @@ class Api:
                 ):
                     keep_going = False  # stop the loop, request no more pages
                     break  # do not yeild this post or remaining (older) posts on this page
+                
+                if created_before and post_at >= created_before:
+                    continue 
 
                 if verbose:
                     logger.debug(f"{post['id']} {post['created_at']}")
